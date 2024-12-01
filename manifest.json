@@ -1,0 +1,20 @@
+{
+  "id": "5e76738a-75a8-4472-89b3-ebd5d72c1fe9",
+  "version": "1.0.0",
+  "platform": "all",
+  "arch": "all",
+  "name": "Twitter Video Downloader",
+  "logo": "assets/logo.png",
+  "keywords": [],
+  "devTools": false,
+  "main": {
+    "url": "index.html",
+    "width": 480,
+    "minWidth": 480,
+    "height": 240,
+    "minHeight": 240,
+    "resizable": false,
+    "frame": false,
+    "vibrancy": true
+  }
+}
