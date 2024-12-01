@@ -1,3 +1,24 @@
+eagle.onPluginCreate(async (plugin) => {
+	updateTheme();
+	console.log('eagle.onPluginCreate');
+	console.log(plugin);
+
+	document.getElementById("twitterUrl").focus()
+
+	document.getElementById("closeButton").addEventListener("click", () => {
+		window.close()
+	})
+
+	document.getElementById('downloadForm').addEventListener('submit', async (e) => {
+		e.preventDefault();
+		await downloadAndImport();
+});
+});
+
+eagle.onThemeChanged(() => {
+	updateTheme();
+});
+
 async function updateTheme() {
 	const THEME_SUPPORT = {
 		AUTO: eagle.app.isDarkColors() ? 'gray' : 'light',
@@ -18,43 +39,6 @@ async function updateTheme() {
 	htmlEl.setAttribute('platform', eagle.app.platform);
 	htmlEl.classList.remove('no-transition');
 }
-
-eagle.onPluginCreate(async (plugin) => {
-	updateTheme();
-	console.log('eagle.onPluginCreate');
-	console.log(plugin);
-
-	document.getElementById("twitterUrl").focus()
-
-	document.getElementById("closeButton").addEventListener("click", () => {
-		window.close()
-	})
-
-	document.getElementById('downloadForm').addEventListener('submit', async (e) => {
-		e.preventDefault();
-		await downloadAndImport();
-});
-});
-
-eagle.onPluginRun(() => {
-	console.log('eagle.onPluginRun');
-});
-
-eagle.onPluginShow(() => {
-	console.log('eagle.onPluginShow');
-});
-
-eagle.onPluginHide(() => {
-	console.log('eagle.onPluginHide');
-});
-
-eagle.onPluginBeforeExit((event) => {
-	console.log('eagle.onPluginBeforeExit');
-});
-
-eagle.onThemeChanged(() => {
-	updateTheme();
-});
 
 async function downloadAndImport() {
 	const statusEl = document.getElementById('status');
