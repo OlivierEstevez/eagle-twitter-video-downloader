@@ -11,8 +11,8 @@
     "url": "index.html",
     "width": 480,
     "minWidth": 480,
-    "height": 240,
-    "minHeight": 240,
+    "height": 180,
+    "minHeight": 180,
     "resizable": false,
     "frame": false,
     "vibrancy": true

@@ -40,14 +40,35 @@ async function updateTheme() {
 	htmlEl.classList.remove('no-transition');
 }
 
+const returnError = (message) => {
+	const statusEl = document.getElementById('status');
+	const urlInput = document.getElementById('twitterUrl');
+	statusEl.textContent = message;
+	statusEl.classList.add('error');
+	urlInput.classList.add('error');
+	urlInput.addEventListener('input', () => {
+			statusEl.textContent = '';
+			statusEl.classList.remove('error');
+			urlInput.classList.remove('error');
+			urlInput.removeEventListener('input', () => {});
+	})
+}
+
 async function downloadAndImport() {
 	const statusEl = document.getElementById('status');
 	const urlInput = document.getElementById('twitterUrl');
 	const url = urlInput.value.trim();
 
+	// Check if URL is specifically from Twitter/X
+	const twitterRegex = /^https?:\/\/(www\.)?(twitter|x)\.com\/\w+\/status\/\d+/i;
 	if (!url) {
-			statusEl.textContent = 'Please enter a Twitter video URL';
-			return;
+		statusEl.textContent = 'Please enter a Twitter/X video URL';
+		return;
+	}
+
+	if (!twitterRegex.test(url)) {
+		returnError('Please enter a valid Twitter/X URL');
+		return;
 	}
 
 	try {
@@ -65,7 +86,7 @@ async function downloadAndImport() {
 			const tweetText = doc.querySelector('.leading-tight p.m-2')?.textContent || 'Twitter Video';
 
 			if (videoContainers.length === 0) {
-					statusEl.textContent = 'No videos found in the tweet.';
+					returnError('No videos found in the tweet.');
 					return;
 			}
 
