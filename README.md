@@ -2,6 +2,8 @@
 
 # Eagle Video Downloader
 
+[English](./README.en.md) | 中文
+
 从 **1000+ 网站**直接下载视频到 Eagle。基于 [yt-dlp](https://github.com/yt-dlp/yt-dlp) 构建。
 
 ## 支持的平台
