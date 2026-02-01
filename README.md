@@ -2,9 +2,9 @@
 
 # Eagle Video Downloader
 
-Download videos from **1000+ websites** directly into Eagle. Powered by [yt-dlp](https://github.com/yt-dlp/yt-dlp).
+从 **1000+ 网站**直接下载视频到 Eagle。基于 [yt-dlp](https://github.com/yt-dlp/yt-dlp) 构建。
 
-## Supported Platforms
+## 支持的平台
 
 - YouTube
 - Twitter / X
@@ -12,93 +12,99 @@ Download videos from **1000+ websites** directly into Eagle. Powered by [yt-dlp]
 - Bilibili
 - Instagram
 - Vimeo
-- And [many more...](https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md)
+- 以及[更多平台...](https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md)
 
-## Features
+## 功能特性
 
-- 🎬 **Multi-platform Support**: Download from 1000+ video websites
-- 📦 **Auto Setup**: Automatically downloads required binaries on first run
-- 📊 **Download Queue**: Add multiple videos and download them concurrently
-- 🔄 **Concurrent Downloads**: Process up to 3 downloads simultaneously
-- 📋 **Queue Management**: View all downloads with real-time progress tracking
-- 🔄 **High Quality**: Downloads best available quality with ffmpeg merging
-- 🦅 **Eagle Integration**: Automatically imports videos to Eagle with metadata
-- 💾 **Persistent History**: Download history saved across sessions
+- 🎬 **多平台支持**：支持 1000+ 视频网站下载
+- 📦 **自动配置**：首次运行自动下载所需组件
+- 🔄 **高质量下载**：自动选择最佳画质，使用 ffmpeg 合并音视频
+- 🦅 **Eagle 集成**：自动导入视频到 Eagle 并保存元数据
+- 🌐 **多语言支持**：支持中文和英文界面
+- ⚡ **实时进度**：下载过程中显示实时进度反馈
+- 🎯 **简洁界面**：极简设计，专注下载体验
 
-## Installation
+## 安装方式
 
-### Eagle Community
+### Eagle 社区
 
-This plugin is published on the Eagle Community:
+插件已发布在 Eagle 社区：
 
-- Install it via [the community](https://community-en.eagle.cool/plugins)
-- Search for it in the Plugin Center on the Eagle app
+- 通过 [Eagle 社区](https://community-cn.eagle.cool/plugins) 安装
+- 或在 Eagle 应用的插件中心搜索安装
 
-### Manual Install
+### 手动安装
 
-1. Download [latest release](https://github.com/OlivierEstevez/eagle-twitter-video-downloader/releases)
-2. In Eagle: Plugin → Developer options... → Import Local Project
+1. 下载[最新版本](https://github.com/OlivierEstevez/eagle-twitter-video-downloader/releases)
+2. 在 Eagle 中：插件 → 开发者选项... → 导入本地项目
 
-## First Run
+## 首次运行
 
-On first launch, the plugin will automatically download:
+首次启动时，插件会自动下载必要组件：
 
-- **yt-dlp** (~30MB) - Video extraction engine
-- **ffmpeg** (~80MB) - For video/audio merging
+- **yt-dlp** (~30MB) - 视频提取引擎
+- **ffmpeg** (~80MB) - 用于音视频合并
 
-This is a one-time download. Please wait for the initialization to complete.
+这是一次性下载，请等待初始化完成。
 
-## Usage
+## 使用方法
 
-1. Copy a video URL from any supported website
-2. Paste it into the plugin input field
-3. Click "Download" to add it to the queue
-4. Add more videos while downloads are in progress
-5. Videos will be downloaded automatically and imported to Eagle
-6. View download progress and history in the queue list
+1. 从任意支持的网站复制视频链接
+2. 粘贴到插件输入框中
+3. 点击下载按钮开始下载
+4. 下载完成后自动导入到 Eagle
+5. 可以查看实时下载进度
 
-## Development
+## 开发指南
 
-### Project Structure
+### 项目结构
 
 ```
-├── index.html           # UI with embedded CSS
+├── index.html           # UI 界面（内嵌 CSS）
 ├── js/
-│   ├── plugin.js        # Main entry point
-│   ├── ui.js            # UI management module
-│   ├── queue.js         # Download queue management
-│   ├── downloader.js    # Video download logic
-│   ├── binary.js        # Binary setup (yt-dlp/ffmpeg)
-│   └── eagle.js         # Eagle API integration
-├── dist/plugin.js       # Bundled output (esbuild)
-├── bin/                 # yt-dlp & ffmpeg binaries (auto-downloaded)
-├── _locales/            # Internationalization files
-├── assets/              # Logo and icons
-└── manifest.json        # Eagle plugin config
+│   ├── plugin.js        # 主入口文件
+│   ├── ui.js            # UI 管理模块
+│   ├── downloader.js    # 视频下载逻辑
+│   ├── binary.js        # 二进制文件管理（yt-dlp/ffmpeg）
+│   └── eagle.js         # Eagle API 集成
+├── dist/plugin.js       # 打包输出文件（esbuild）
+├── bin/                 # yt-dlp 和 ffmpeg 二进制文件（自动下载）
+├── _locales/            # 国际化文件
+│   ├── en.json          # 英文翻译
+│   └── zh_CN.json       # 中文翻译
+├── assets/              # 图标和资源
+└── manifest.json        # Eagle 插件配置
 ```
 
-### Commands
+### 开发命令
 
 ```bash
-# Install dependencies
+# 安装依赖
 npm install
 
-# Build plugin
+# 构建插件
 npm run build
 
-# Watch mode for development
+# 开发模式（监听文件变化）
 npm run dev
 ```
 
-## Requirements
+### 技术栈
 
-- Eagle 3.0 or later
-- Internet connection (for first-time setup and downloading videos)
+- **yt-dlp**：视频下载核心引擎
+- **ffmpeg-static**：音视频合并处理
+- **esbuild**：快速打包构建
+- **i18next**：国际化支持
 
-## License
+## 系统要求
+
+- Eagle 3.0 或更高版本
+- 网络连接（用于首次配置和下载视频）
+
+## 开源协议
 
 MIT © [Olivier Estévez](https://github.com/OlivierEstevez)
 
 ---
 
-> **Note**: This tool is for personal use only. Please respect the terms of service of the video platforms and copyright laws in your region.
+> **注意**：本工具仅供个人使用。请遵守视频平台的服务条款和您所在地区的版权法律。
