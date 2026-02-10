@@ -201,7 +201,7 @@ async function handleDownload(url) {
     ui.setInputBarState("downloading");
 
     // 开始下载（传入已获取的 videoInfo，避免重复请求）
-    const result = await downloader.downloadVideo(
+    const results = await downloader.downloadVideo(
       url,
       (progress) => {
         if (currentDownload && currentDownload.state === "downloading") {
@@ -222,11 +222,14 @@ async function handleDownload(url) {
     // 清空输入栏内容
     ui.clearInputBar();
 
-    // 导入到 Eagle
+    // 导入所有视频到 Eagle
     try {
-      await eagleApi.importToEagle(result.path, result.metadata, url);
-      // 清理临时文件
-      downloader.cleanup(result.path);
+      // results 现在是一个数组，可能包含多个视频
+      for (const result of results) {
+        await eagleApi.importToEagle(result.path, result.metadata, url);
+        // 清理临时文件
+        downloader.cleanup(result.path);
+      }
     } catch (error) {
       console.error("Eagle import error:", error);
     }

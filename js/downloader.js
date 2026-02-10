@@ -161,6 +161,7 @@ function getTempDir() {
  * @param {Function} onProgress - 进度回调
  * @param {Function} onStatus - 状态回调
  * @param {Object} preloadedInfo - 可选，预先获取的视频信息，避免重复请求
+ * @returns {Promise<Array>} - 返回下载的视频数组（支持多视频）
  */
 async function downloadVideo(url, onProgress, onStatus, preloadedInfo = null) {
   let videoInfo;
@@ -184,23 +185,20 @@ async function downloadVideo(url, onProgress, onStatus, preloadedInfo = null) {
 
   const outputDir = getTempDir();
   const sanitizedTitle = sanitizeFilename(videoInfo.title);
-  const outputPath = path.join(outputDir, `${sanitizedTitle}.mp4`);
-
-  if (fs.existsSync(outputPath)) {
-    fs.unlinkSync(outputPath);
-  }
+  
+  // 使用模板支持多视频下载：%(title)s_%(autonumber)s.%(ext)s
+  const outputTemplate = path.join(outputDir, `${sanitizedTitle}_%(autonumber)s.%(ext)s`);
 
   url = normalizeUrl(url);
 
   const args = [
     url,
     "-o",
-    outputPath,
+    outputTemplate,
     "-f",
     "bestvideo+bestaudio/best",
     "--merge-output-format",
     "mp4",
-    "--no-playlist",
     "--no-warnings",
   ];
 
@@ -211,26 +209,25 @@ async function downloadVideo(url, onProgress, onStatus, preloadedInfo = null) {
 
   if (onStatus) onStatus(i18next.t("ui.downloading"));
 
+  // 记录下载前的文件列表
+  const filesBefore = new Set(fs.existsSync(outputDir) ? fs.readdirSync(outputDir) : []);
+
   await execYtDlp(args, onProgress);
 
-  if (!fs.existsSync(outputPath)) {
-    const files = fs.readdirSync(outputDir);
-    const matchingFile = files.find((f) => f.startsWith(sanitizedTitle));
-    if (matchingFile) {
-      return {
-        path: path.join(outputDir, matchingFile),
-        metadata: videoInfo,
-        filename: matchingFile,
-      };
-    }
+  // 获取下载后新增的文件
+  const filesAfter = fs.readdirSync(outputDir);
+  const newFiles = filesAfter.filter(f => !filesBefore.has(f) && f.startsWith(sanitizedTitle));
+
+  if (newFiles.length === 0) {
     throw new Error(i18next.t("error.fileNotFound"));
   }
 
-  return {
-    path: outputPath,
+  // 返回所有下载的视频
+  return newFiles.map(filename => ({
+    path: path.join(outputDir, filename),
     metadata: videoInfo,
-    filename: path.basename(outputPath),
-  };
+    filename: filename,
+  }));
 }
 
 /**
