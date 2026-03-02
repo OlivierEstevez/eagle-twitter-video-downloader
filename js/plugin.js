@@ -9,6 +9,12 @@ eagle.onPluginCreate(async (plugin) => {
 		window.close()
 	})
 
+	document.addEventListener("keydown", (e) => {
+		if (e.key === "Escape") {
+			window.close()
+		}
+	})
+
 	document.getElementById('downloadForm').addEventListener('submit', async (e) => {
 		e.preventDefault();
 		await downloadAndImport();
