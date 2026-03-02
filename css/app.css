@@ -9,18 +9,38 @@
   font-weight: 400;
 }
 
-/* Theme Variables */
+/* Per-theme background colors */
+html[theme="light"]     { --app-bg: #f4f4f4; }
+html[theme="lightgray"] { --app-bg: #e3e4e6; }
+html[theme="gray"]      { --app-bg: #37383c; }
+html[theme="dark"]      { --app-bg: #18191c; }
+html[theme="blue"]      { --app-bg: #0d1630; }
+html[theme="purple"]    { --app-bg: #1c1424; }
+
+/* Light theme variables */
+html[theme="light"],
+html[theme="lightgray"] {
+  --border-secondary: rgba(0, 0, 0, 0.1);
+  --color-bg-hover: rgba(0, 0, 0, 0.05);
+  --color-text-primary: rgb(24, 25, 28);
+  --color-text-secondary: rgba(24, 25, 28, 0.7);
+  --color-text-tertiary: rgba(24, 25, 28, 0.5);
+  --background-mix-color: rgba(0, 0, 0, 0.05);
+  --input-bg: rgba(0, 0, 0, 0.06);
+}
+
+/* Dark theme variables */
 html[theme="dark"],
 html[theme="gray"],
 html[theme="blue"],
 html[theme="purple"] {
   --border-secondary: rgba(255, 255, 255, 0.1);
   --color-bg-hover: rgba(255, 255, 255, 0.05);
-  --close-btn-image: url(../images/dark/ic-close.svg);
   --color-text-primary: rgb(248, 249, 251);
   --color-text-secondary: rgba(248, 249, 251, 0.7);
   --color-text-tertiary: rgba(248, 249, 251, 0.5);
   --background-mix-color: rgba(255, 255, 255, 0.05);
+  --input-bg: rgba(0, 0, 0, 0.2);
 }
 
 /* Layout Structure */
@@ -35,7 +55,7 @@ body {
 }
 
 .app {
-  background-color: rgba(24, 25, 28, 0.9);
+  background-color: var(--app-bg, #18191c);
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -77,7 +97,6 @@ header .btn-close {
   width: 24px;
   height: 24px;
   background-color: transparent;
-  background-image: var(--close-btn-image);
   cursor: pointer;
   border: none;
   border-radius: 4px;
@@ -118,9 +137,9 @@ input {
   padding: 0 12px;
   border-radius: 8px;
   width: 100%;
-  background: rgba(0, 0, 0, 0.2);
+  background: var(--input-bg);
   height: 36px;
-  border: 1px solid var(--color-bg-hover);
+  border: 1px solid var(--border-secondary);
   color: var(--color-text-primary);
 }
 
@@ -139,7 +158,7 @@ button {
   justify-content: center;
   align-items: center;
   background-color: rgb(50, 151, 255);
-  color: var(--color-text-primary);
+  color: #fff;
   padding: 0 16px;
   border-radius: 8px;
   border: 1px solid rgba(255, 255, 255, 0.15);

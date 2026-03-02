@@ -38,6 +38,7 @@ async function updateTheme() {
 	htmlEl.setAttribute('theme', themeName);
 	htmlEl.setAttribute('platform', eagle.app.platform);
 	htmlEl.classList.remove('no-transition');
+	htmlEl.style.visibility = 'visible';
 }
 
 const returnError = (message) => {
