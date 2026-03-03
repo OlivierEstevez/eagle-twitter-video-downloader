@@ -2,11 +2,18 @@
 
 # Eagle Twitter / X Video Downloader
 
-This Eagle plugin lets you download high-quality videos from Twitter / X and automatically add their URL and title.
+This Eagle plugin lets you download high-quality videos and GIFs from Twitter / X and automatically add their URL and title.
 
-> [!WARNING]  
-> This plugin relies on [Twitsave](https://twitsave.com/) to download videos. 
-> See issue [Remove third-party dependency on Twitsave](https://github.com/OlivierEstevez/eagle-twitter-video-downloader/issues/1).
+## Features
+
+- Download videos from Twitter / X tweets
+- Download GIFs from Twitter / X tweets (auto-converted from MP4 to GIF via ffmpeg)
+- Supports both `twitter.com` and `x.com` URLs
+- Auto-imports to Eagle with tweet text as name and `twitter` tag
+
+## Prerequisites
+
+- **ffmpeg** (required for GIF downloads) — Install via [Homebrew](https://brew.sh/) (`brew install ffmpeg`), or download from [ffmpeg.org](https://ffmpeg.org/download.html). The plugin searches common locations including `~/.local/bin`, `/usr/local/bin`, and `/opt/homebrew/bin`.
 
 ## Installation
 
