@@ -5,6 +5,13 @@ eagle.onPluginCreate(async (plugin) => {
 
 	document.getElementById("twitterUrl").focus()
 
+	// Load auto-close setting
+	const autoCloseCheckbox = document.getElementById("autoClose");
+	autoCloseCheckbox.checked = localStorage.getItem("autoClose") === "true";
+	autoCloseCheckbox.addEventListener("change", () => {
+		localStorage.setItem("autoClose", autoCloseCheckbox.checked);
+	});
+
 	document.getElementById("closeButton").addEventListener("click", () => {
 		window.close()
 	})
@@ -122,6 +129,10 @@ async function downloadAndImport() {
 
 			statusEl.textContent = 'All videos imported successfully!';
 			urlInput.value = '';
+
+			if (localStorage.getItem("autoClose") === "true") {
+				setTimeout(() => window.close(), 1000);
+			}
 
 	} catch (error) {
 			statusEl.textContent = `Error: ${error.message}`;
