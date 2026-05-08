@@ -33,7 +33,14 @@
 			<div class="container">
 				<label for="twitterUrl">Twitter / X URL</label>
 				<form id="downloadForm">
-					<input type="text" id="twitterUrl" placeholder="Paste Twitter video URL here">
+					<div class="url-input-wrap">
+						<input type="text" id="twitterUrl" placeholder="Paste Twitter video URL here">
+						<button type="button" class="clipboard-btn" id="clipboardButton" title="Paste from clipboard" aria-label="Paste from clipboard">
+							<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+								<path d="M5.5 2.5C5.5 1.67157 6.17157 1 7 1H9C9.82843 1 10.5 1.67157 10.5 2.5H11.5C12.3284 2.5 13 3.17157 13 4V13.5C13 14.3284 12.3284 15 11.5 15H4.5C3.67157 15 3 14.3284 3 13.5V4C3 3.17157 3.67157 2.5 4.5 2.5H5.5ZM7 2C6.72386 2 6.5 2.22386 6.5 2.5V3C6.5 3.27614 6.72386 3.5 7 3.5H9C9.27614 3.5 9.5 3.27614 9.5 3V2.5C9.5 2.22386 9.27614 2 9 2H7ZM4.5 3.5C4.22386 3.5 4 3.72386 4 4V13.5C4 13.7761 4.22386 14 4.5 14H11.5C11.7761 14 12 13.7761 12 13.5V4C12 3.72386 11.7761 3.5 11.5 3.5H10.4142C10.2078 4.0826 9.65268 4.5 9 4.5H7C6.34732 4.5 5.79224 4.0826 5.58579 3.5H4.5Z" fill="currentColor"/>
+							</svg>
+						</button>
+					</div>
 					<button type="submit"><span>Download</span></button>
 				</form>
 				<div id="status"></div>

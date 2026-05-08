@@ -4,6 +4,7 @@ eagle.onPluginCreate(async (plugin) => {
 	console.log(plugin);
 
 	document.getElementById("twitterUrl").focus()
+	document.getElementById("twitterUrl").addEventListener('input', clearError);
 
 	document.getElementById("closeButton").addEventListener("click", () => {
 		window.close()
@@ -24,6 +25,8 @@ eagle.onPluginCreate(async (plugin) => {
 	document.getElementById('settingsButton').addEventListener('click', () => {
 		settingsOverlay.classList.toggle('open');
 	});
+
+	document.getElementById('clipboardButton').addEventListener('click', pasteClipboardToInput);
 
 	const autoCloseCheckbox = document.getElementById('autoClose');
 	autoCloseCheckbox.checked = localStorage.getItem('autoClose') === 'true';
@@ -63,18 +66,42 @@ async function updateTheme() {
 	htmlEl.style.visibility = 'visible';
 }
 
+const clearError = () => {
+	const statusEl = document.getElementById('status');
+	const urlInput = document.getElementById('twitterUrl');
+	statusEl.textContent = '';
+	statusEl.classList.remove('error');
+	urlInput.classList.remove('error');
+}
+
 const returnError = (message) => {
 	const statusEl = document.getElementById('status');
 	const urlInput = document.getElementById('twitterUrl');
 	statusEl.textContent = message;
 	statusEl.classList.add('error');
 	urlInput.classList.add('error');
-	urlInput.addEventListener('input', () => {
-			statusEl.textContent = '';
-			statusEl.classList.remove('error');
-			urlInput.classList.remove('error');
-			urlInput.removeEventListener('input', () => {});
-	})
+}
+
+async function pasteClipboardToInput() {
+	const urlInput = document.getElementById('twitterUrl');
+
+	try {
+		const text = await eagle.clipboard.readText();
+		const value = text.trim();
+
+		if (!value) {
+			returnError('Clipboard is empty');
+			urlInput.focus();
+			return;
+		}
+
+		urlInput.value = value;
+		clearError();
+		urlInput.focus();
+	} catch (error) {
+		returnError('Could not read clipboard');
+		console.error('Clipboard error:', error);
+	}
 }
 
 async function downloadAndImport() {

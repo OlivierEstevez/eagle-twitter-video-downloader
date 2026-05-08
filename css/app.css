@@ -145,8 +145,14 @@ label {
   gap: 0.5em;
 }
 
+.url-input-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+}
+
 input {
-  padding: 0 12px;
+  padding: 0 44px 0 12px;
   border-radius: 8px;
   width: 100%;
   background: var(--input-bg);
@@ -161,6 +167,32 @@ input:focus {
 
 input.error:focus {
   border-color: #f56c6c;
+}
+
+.clipboard-btn {
+  position: absolute;
+  top: 50%;
+  right: 5px;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  transform: translateY(-50%);
+  background-color: transparent;
+  border: none;
+  border-radius: 6px;
+  color: var(--color-text-tertiary);
+  line-height: 1;
+}
+
+.clipboard-btn:hover {
+  background-color: var(--color-bg-hover);
+  background-image: none !important;
+  color: var(--color-text-primary);
+}
+
+.clipboard-btn:focus-visible {
+  color: var(--color-text-primary);
+  box-shadow: 0 0 0 2px rgba(50, 151, 255, 0.35);
 }
 
 button {
