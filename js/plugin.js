@@ -66,6 +66,8 @@ async function updateTheme() {
 	htmlEl.style.visibility = 'visible';
 }
 
+const twitterRegex = /^https?:\/\/(www\.)?(twitter|x)\.com\/\w+\/status\/\d+/i;
+
 const clearError = () => {
 	const statusEl = document.getElementById('status');
 	const urlInput = document.getElementById('twitterUrl');
@@ -96,7 +98,13 @@ async function pasteClipboardToInput() {
 		}
 
 		urlInput.value = value;
-		clearError();
+
+		if (!twitterRegex.test(value)) {
+			returnError('Please enter a valid Twitter/X URL');
+		} else {
+			clearError();
+		}
+
 		urlInput.focus();
 	} catch (error) {
 		returnError('Could not read clipboard');
@@ -110,7 +118,6 @@ async function downloadAndImport() {
 	const url = urlInput.value.trim();
 
 	// Check if URL is specifically from Twitter/X
-	const twitterRegex = /^https?:\/\/(www\.)?(twitter|x)\.com\/\w+\/status\/\d+/i;
 	if (!url) {
 		statusEl.textContent = 'Please enter a Twitter/X video URL';
 		return;

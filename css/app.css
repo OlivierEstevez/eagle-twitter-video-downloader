@@ -165,6 +165,7 @@ input:focus {
   border-color: #3297ff;
 }
 
+input.error,
 input.error:focus {
   border-color: #f56c6c;
 }
