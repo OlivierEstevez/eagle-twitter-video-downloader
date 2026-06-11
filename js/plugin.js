@@ -3,8 +3,15 @@ eagle.onPluginCreate(async (plugin) => {
 	console.log('eagle.onPluginCreate');
 	console.log(plugin);
 
-	document.getElementById("twitterUrl").focus()
-	document.getElementById("twitterUrl").addEventListener('input', clearError);
+	const urlInput = document.getElementById("twitterUrl");
+	urlInput.focus();
+	urlInput.addEventListener('input', clearError);
+	urlInput.addEventListener('paste', (e) => {
+		const text = (e.clipboardData || window.clipboardData).getData('text').trim();
+		if (text && !twitterRegex.test(text)) {
+			setTimeout(() => returnError('Please enter a valid Twitter/X URL'), 0);
+		}
+	});
 
 	document.getElementById("closeButton").addEventListener("click", () => {
 		window.close()
