@@ -35,6 +35,12 @@ eagle.onPluginCreate(async (plugin) => {
 
 	document.getElementById('clipboardButton').addEventListener('click', pasteClipboardToInput);
 
+	const saveToCurrentFolderCheckbox = document.getElementById('saveToCurrentFolder');
+	saveToCurrentFolderCheckbox.checked = localStorage.getItem('saveToCurrentFolder') === 'true';
+	saveToCurrentFolderCheckbox.addEventListener('change', () => {
+		localStorage.setItem('saveToCurrentFolder', saveToCurrentFolderCheckbox.checked);
+	});
+
 	const autoCloseCheckbox = document.getElementById('autoClose');
 	autoCloseCheckbox.checked = localStorage.getItem('autoClose') === 'true';
 	autoCloseCheckbox.addEventListener('change', () => {
@@ -164,11 +170,20 @@ async function downloadAndImport() {
 				.replace(/\s{2,}/g, ' ')
 				.trim();
 
-			await eagle.item.addFromURL(data.video_url, {
-        name: caption || "Twitter Video",
-        website: url,
-        tags: ["twitter"],
-      });
+			const options = {
+				name: caption || "Twitter Video",
+				website: url,
+				tags: ["twitter"],
+			};
+
+			if (localStorage.getItem('saveToCurrentFolder') === 'true') {
+				const selectedFolders = await eagle.folder.getSelected();
+				if (selectedFolders.length > 0) {
+					options.folders = [selectedFolders[0].id];
+				}
+			}
+
+			await eagle.item.addFromURL(data.video_url, options);
 
 			statusEl.textContent = 'Video imported successfully!';
 			urlInput.value = '';

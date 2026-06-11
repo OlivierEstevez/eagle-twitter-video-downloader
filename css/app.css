@@ -251,7 +251,7 @@ button:hover {
 
 .settings-overlay .container {
   width: 100%;
-  margin-top: -1.5em;
+  margin-top: 0em;
 }
 
 .block-content {
