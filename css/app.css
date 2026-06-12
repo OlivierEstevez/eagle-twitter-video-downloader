@@ -233,25 +233,12 @@ button:hover {
 
 /* Settings Overlay */
 .settings-overlay {
-  position: absolute;
-  inset: 0;
-  top: 38px;
-  background-color: var(--app-bg, #18191c);
-  color: var(--color-text-primary);
-  padding: 0 12px;
   display: none;
-  align-items: center;
-  justify-content: center;
-  z-index: 10;
 }
 
 .settings-overlay.open {
-  display: flex;
-}
-
-.settings-overlay .container {
-  width: 100%;
-  margin-top: 0em;
+  display: block;
+  margin-top: -0.5em;
 }
 
 .block-content {

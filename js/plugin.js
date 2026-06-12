@@ -17,21 +17,25 @@ eagle.onPluginCreate(async (plugin) => {
 		window.close()
 	})
 
+	const mainView = document.getElementById('mainView');
 	const settingsOverlay = document.getElementById('settingsOverlay');
+
+	const toggleSettings = () => {
+		const isOpen = settingsOverlay.classList.toggle('open');
+		mainView.style.display = isOpen ? 'none' : '';
+	};
 
 	document.addEventListener("keydown", (e) => {
 		if (e.key === "Escape") {
 			if (settingsOverlay.classList.contains('open')) {
-				settingsOverlay.classList.remove('open');
+				toggleSettings();
 			} else {
 				window.close();
 			}
 		}
 	})
 
-	document.getElementById('settingsButton').addEventListener('click', () => {
-		settingsOverlay.classList.toggle('open');
-	});
+	document.getElementById('settingsButton').addEventListener('click', toggleSettings);
 
 	document.getElementById('clipboardButton').addEventListener('click', pasteClipboardToInput);
 
