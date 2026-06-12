@@ -3,26 +3,46 @@ eagle.onPluginCreate(async (plugin) => {
 	console.log('eagle.onPluginCreate');
 	console.log(plugin);
 
-	document.getElementById("twitterUrl").focus()
+	const urlInput = document.getElementById("twitterUrl");
+	urlInput.focus();
+	urlInput.addEventListener('input', clearError);
+	urlInput.addEventListener('paste', (e) => {
+		const text = (e.clipboardData || window.clipboardData).getData('text').trim();
+		if (text && !twitterRegex.test(text)) {
+			setTimeout(() => returnError('Please enter a valid Twitter/X URL'), 0);
+		}
+	});
 
 	document.getElementById("closeButton").addEventListener("click", () => {
 		window.close()
 	})
 
+	const mainView = document.getElementById('mainView');
 	const settingsOverlay = document.getElementById('settingsOverlay');
+
+	const toggleSettings = () => {
+		const isOpen = settingsOverlay.classList.toggle('open');
+		mainView.style.display = isOpen ? 'none' : '';
+	};
 
 	document.addEventListener("keydown", (e) => {
 		if (e.key === "Escape") {
 			if (settingsOverlay.classList.contains('open')) {
-				settingsOverlay.classList.remove('open');
+				toggleSettings();
 			} else {
 				window.close();
 			}
 		}
 	})
 
-	document.getElementById('settingsButton').addEventListener('click', () => {
-		settingsOverlay.classList.toggle('open');
+	document.getElementById('settingsButton').addEventListener('click', toggleSettings);
+
+	document.getElementById('clipboardButton').addEventListener('click', pasteClipboardToInput);
+
+	const saveToCurrentFolderCheckbox = document.getElementById('saveToCurrentFolder');
+	saveToCurrentFolderCheckbox.checked = localStorage.getItem('saveToCurrentFolder') === 'true';
+	saveToCurrentFolderCheckbox.addEventListener('change', () => {
+		localStorage.setItem('saveToCurrentFolder', saveToCurrentFolderCheckbox.checked);
 	});
 
 	const autoCloseCheckbox = document.getElementById('autoClose');
@@ -63,18 +83,50 @@ async function updateTheme() {
 	htmlEl.style.visibility = 'visible';
 }
 
+const twitterRegex = /^https?:\/\/(www\.)?(twitter|x)\.com\/\w+\/status\/\d+/i;
+
+const clearError = () => {
+	const statusEl = document.getElementById('status');
+	const urlInput = document.getElementById('twitterUrl');
+	statusEl.textContent = '';
+	statusEl.classList.remove('error');
+	urlInput.classList.remove('error');
+}
+
 const returnError = (message) => {
 	const statusEl = document.getElementById('status');
 	const urlInput = document.getElementById('twitterUrl');
 	statusEl.textContent = message;
 	statusEl.classList.add('error');
 	urlInput.classList.add('error');
-	urlInput.addEventListener('input', () => {
-			statusEl.textContent = '';
-			statusEl.classList.remove('error');
-			urlInput.classList.remove('error');
-			urlInput.removeEventListener('input', () => {});
-	})
+}
+
+async function pasteClipboardToInput() {
+	const urlInput = document.getElementById('twitterUrl');
+
+	try {
+		const text = await eagle.clipboard.readText();
+		const value = text.trim();
+
+		if (!value) {
+			returnError('Clipboard is empty');
+			urlInput.focus();
+			return;
+		}
+
+		urlInput.value = value;
+
+		if (!twitterRegex.test(value)) {
+			returnError('Please enter a valid Twitter/X URL');
+		} else {
+			clearError();
+		}
+
+		urlInput.focus();
+	} catch (error) {
+		returnError('Could not read clipboard');
+		console.error('Clipboard error:', error);
+	}
 }
 
 async function downloadAndImport() {
@@ -83,7 +135,6 @@ async function downloadAndImport() {
 	const url = urlInput.value.trim();
 
 	// Check if URL is specifically from Twitter/X
-	const twitterRegex = /^https?:\/\/(www\.)?(twitter|x)\.com\/\w+\/status\/\d+/i;
 	if (!url) {
 		statusEl.textContent = 'Please enter a Twitter/X video URL';
 		return;
@@ -123,11 +174,20 @@ async function downloadAndImport() {
 				.replace(/\s{2,}/g, ' ')
 				.trim();
 
-			await eagle.item.addFromURL(data.video_url, {
-        name: caption || "Twitter Video",
-        website: url,
-        tags: ["twitter"],
-      });
+			const options = {
+				name: caption || "Twitter Video",
+				website: url,
+				tags: ["twitter"],
+			};
+
+			if (localStorage.getItem('saveToCurrentFolder') === 'true') {
+				const selectedFolders = await eagle.folder.getSelected();
+				if (selectedFolders.length > 0) {
+					options.folders = [selectedFolders[0].id];
+				}
+			}
+
+			await eagle.item.addFromURL(data.video_url, options);
 
 			statusEl.textContent = 'Video imported successfully!';
 			urlInput.value = '';
